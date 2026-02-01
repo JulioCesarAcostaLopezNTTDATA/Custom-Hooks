@@ -1,17 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { InvoicesView } from "../ui/InvoicesView";
 import { useInvoices } from "./useInvoices";
+import { useInvoiceSearch } from "./useInvoiceSearch";
 
 export function InvoicesPage() {
-  const [filter, setFilter] = useState("");
   const { data, isLoading } = useInvoices();
+  const invoices = data ?? [];
 
-  const filtered = useMemo(() => {
-    const invoices = data ?? [];
-    const f = filter.trim();
-    if (!f) return invoices;
-    return invoices.filter((x) => x.id.includes(f));
-  }, [data, filter]);
+  const { filter, setFilter, filtered, isDebouncing } = useInvoiceSearch(invoices);
 
   return (
     <InvoicesView
@@ -19,6 +15,7 @@ export function InvoicesPage() {
       invoices={filtered}
       filter={filter}
       onFilterChange={setFilter}
+      isDebouncing={isDebouncing}
     />
   );
 }

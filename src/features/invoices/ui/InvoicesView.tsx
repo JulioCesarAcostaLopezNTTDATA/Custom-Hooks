@@ -6,9 +6,16 @@ type Props = {
   invoices: Invoice[];
   filter: string;
   onFilterChange: (value: string) => void;
+  isDebouncing?: boolean;
 };
 
-export function InvoicesView({ loading, invoices, filter, onFilterChange }: Props) {
+export function InvoicesView({
+  loading,
+  invoices,
+  filter,
+  onFilterChange,
+  isDebouncing,
+}: Props) {
   return (
     <div>
       <h3>Mis facturas</h3>
@@ -19,6 +26,7 @@ export function InvoicesView({ loading, invoices, filter, onFilterChange }: Prop
         onChange={(e) => onFilterChange(e.target.value)}
         placeholder="INV-00"
       />
+      {isDebouncing ? <div className="small">Buscando...</div> : null}
 
       <div className="hr" />
 
